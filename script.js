@@ -122,4 +122,30 @@ let pro_handler={
 
 var proxy=new Proxy(student,pro_handler);
 
+let department={
+	name:'BI',
+	group:"Platform",
+	size:1
+};
 
+let dep_handler={
+	get:(target,name)=>{
+		return name in target ? target[name]:false
+	}
+};
+let depproxy=new Proxy({},dep_handler);
+Reflect.setPrototypeOf(department,depproxy);
+
+
+let showName=function(msg){
+	console.log("Object name "+msg);
+}
+
+let name_handler={
+	apply:function(target,thisarg,argumentList){
+		if(argumentList.length==2)
+		  return Reflect.apply(target,thisarg,argumentList);
+	}
+};
+
+let name_proxy=new Proxy(showName,name_handler);
